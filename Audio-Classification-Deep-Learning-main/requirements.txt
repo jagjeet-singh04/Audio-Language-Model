@@ -1,0 +1,15 @@
+notebook
+librosa
+pandas
+seaborn
+numpy
+tqdm
+matplotlib
+scikit-learn
+tensorflow
+django
+resampy
+faster-whisper
+spacy
+vadersentiment
+pydub

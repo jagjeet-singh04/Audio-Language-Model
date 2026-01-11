@@ -1,0 +1,51 @@
+{% load static %}
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>ALM · Listen · Think · Understand</title>
+		<link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+	</head>
+	<body>
+		<div id="loading-overlay" class="loading-overlay" hidden>
+			<div class="spinner"></div>
+			<p>Analyzing speech…</p>
+		</div>
+		<header class="hero">
+			<div class="container">
+				<h1>Audio Language Model</h1>
+				<p class="subtitle">Upload a speech recording and let ALM transcribe, summarize, and understand it.</p>
+			</div>
+		</header>
+
+		<main class="container">
+			<section class="card">
+				<h2>Upload Audio</h2>
+				<p class="muted">Supported formats: WAV, FLAC, OGG. Recommended: 16–22kHz mono.</p>
+				<form id="alm-form" method="POST" enctype="multipart/form-data" action="result/">
+					{% csrf_token %}
+					<div class="filepicker">
+						<label for="wavfile" class="btn">Choose Audio File</label>
+						<input type="file" id="wavfile" name="wavfile" accept="audio/*" />
+						<span id="filename" class="filename">No file selected</span>
+					</div>
+					<div class="actions">
+						<button type="submit" class="btn primary" id="analyze-btn" disabled>Analyze Speech</button>
+					</div>
+				</form>
+			</section>
+
+			<section class="tips">
+				<h3>Tips</h3>
+				<ul>
+					<li>Clear speech and low background noise produce better results.</li>
+					<li>Short clips (10–60s) analyze faster.</li>
+					<li>First run may download models – keep internet on.</li>
+				</ul>
+			</section>
+		</main>
+
+		<script src="{% static 'js/script.js' %}"></script>
+	</body>
+</html>

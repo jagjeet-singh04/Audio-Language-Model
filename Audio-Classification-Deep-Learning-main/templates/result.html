@@ -1,0 +1,79 @@
+{% load static %}
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>ALM Results</title>
+		<link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+	</head>
+	<body>
+		<header class="hero small">
+			<div class="container">
+				<h1>Audio Language Model · Results</h1>
+				<p class="subtitle">Transcription and understanding from your uploaded audio.</p>
+			</div>
+		</header>
+
+		<main class="container grid">
+			<section class="card span-2">
+				<div class="card-header">
+					<h2>Transcript</h2>
+					<button class="btn" id="copy-btn">Copy</button>
+				</div>
+				<pre id="transcript" class="transcript">{{ transcription.text }}</pre>
+
+				{% if transcription.segments %}
+				<details class="segments">
+					<summary>Show segments</summary>
+					<ul>
+						{% for s in transcription.segments %}
+						<li><span class="time">{{ s.start }}s → {{ s.end }}s</span> {{ s.text }}</li>
+						{% endfor %}
+					</ul>
+				</details>
+				{% endif %}
+			</section>
+
+			<section class="card">
+				<h2>Understanding</h2>
+				<div class="kv">
+					<div><span class="k">Intent</span><span class="v">{{ nlu.intent }}</span></div>
+					<div><span class="k">Summary</span><span class="v">{{ nlu.summary }}</span></div>
+				</div>
+				<h3>Sentiment</h3>
+				<div class="kv">
+					<div><span class="k">Negative</span><span class="v">{{ nlu.sentiment.neg }}</span></div>
+					<div><span class="k">Neutral</span><span class="v">{{ nlu.sentiment.neu }}</span></div>
+					<div><span class="k">Positive</span><span class="v">{{ nlu.sentiment.pos }}</span></div>
+					<div><span class="k">Compound</span><span class="v">{{ nlu.sentiment.compound }}</span></div>
+				</div>
+			</section>
+
+			<section class="card">
+				<h2>Key Phrases</h2>
+				<div class="chips">
+					{% for phrase in nlu.key_phrases %}
+					<span class="chip">{{ phrase }}</span>
+					{% empty %}
+					<p class="muted">No key phrases detected.</p>
+					{% endfor %}
+				</div>
+				<h2>Entities</h2>
+				<ul class="entities">
+					{% for ent in nlu.entities %}
+					<li><span class="entity-text">{{ ent.text }}</span> <span class="entity-label">{{ ent.label }}</span></li>
+					{% empty %}
+					<p class="muted">No entities detected.</p>
+					{% endfor %}
+				</ul>
+			</section>
+		</main>
+
+		<footer class="container center">
+			<a class="btn" href="/">Analyze another file</a>
+		</footer>
+
+		<script src="{% static 'js/script.js' %}"></script>
+	</body>
+</html>
